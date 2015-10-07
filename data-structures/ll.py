@@ -1,26 +1,24 @@
-'''Python linked list implementation
-
-Objectives:
-    O(n) lookup
-    Variable size
-    No implicit memory allocation
-
->>> ll = node('cat')
->>> ll.content
-'cat'
->>> ll.next
->>> ll.next = node('dog')
->>> ll.next.content
-'dog'
->>> ll
-Content: (cat), next = True
->>> ll.find('dog')
-Content: (dog), next = False
->>> ll.find('monkey')
-'''
-
-
 class node(object):
+    '''Python linked list implementation
+
+    Objectives:
+        O(n) lookup
+        Variable size
+        No implicit memory allocation
+
+    >>> ll = node('cat')
+    >>> ll.content
+    'cat'
+    >>> ll.next
+    >>> ll.next = node('dog')
+    >>> ll.next.content
+    'dog'
+    >>> ll
+    Content: (cat), next = True
+    >>> ll.find('dog')
+    Content: (dog), next = False
+    >>> ll.find('monkey')
+    '''
     def __init__(self, content):
         self.content = content
         self.next = None

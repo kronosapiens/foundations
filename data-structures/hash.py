@@ -1,36 +1,35 @@
-'''Python dict implementation (hash table)
-
-Objectives:
-    O(1) lookup (average case)
-    O(1) write (average case)
-
-    O(n) lookup (worst case)
-    O(n) write (worst case)
-
-    No implicit memory allocation
-
->>> mydict = dict()
->>> mydict.set('cat', 'meow')
->>> mydict.get('cat')
-'meow'
-
->>> mydict.set('cat', 'purr')
->>> mydict.get('cat')
-'purr'
-
->>> mydict.get('dog')
-Traceback (most recent call last):
-KeyError: "Key 'dog' not found!"
-
->>> mydict.set('dog', 'woof')
->>> mydict.get('dog')
-'woof'
-
->>> mydict.size == len(mydict.data)
-True
-'''
-
 class dict(object):
+    '''Python dict implementation (hash table)
+
+    Objectives:
+        O(1) lookup (average case)
+        O(1) write (average case)
+
+        O(n) lookup (worst case)
+        O(n) write (worst case)
+
+        No implicit memory allocation
+
+    >>> mydict = dict()
+    >>> mydict.set('cat', 'meow')
+    >>> mydict.get('cat')
+    'meow'
+
+    >>> mydict.set('cat', 'purr')
+    >>> mydict.get('cat')
+    'purr'
+
+    >>> mydict.get('dog')
+    Traceback (most recent call last):
+    KeyError: "Key 'dog' not found!"
+
+    >>> mydict.set('dog', 'woof')
+    >>> mydict.get('dog')
+    'woof'
+
+    >>> mydict.size == len(mydict.data)
+    True
+    '''
     def __init__(self, size=50):
         self.size = size
         self.data = [None for _ in xrange(size)] # Initialize to "fixed" width
