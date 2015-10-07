@@ -18,20 +18,33 @@ class node(object):
     >>> ll.find('dog')
     Content: (dog), next = False
     >>> ll.find('monkey')
+    >>> ll.next.next = node('monkey')
+    >>> ll.find('monkey')
+    Content: (monkey), next = False
+    >>> ll.remove_next()
+    >>> ll.next.content
+    'monkey'
     '''
     def __init__(self, content):
         self.content = content
         self.next = None
 
     def __repr__(self):
-        return 'Content: ({}), next = {}'.format(
-            self.content, self.next is not None)
+        return 'Content: ({}), next = {}'.format(self.content, self.has_next)
+
+    @property
+    def has_next(self):
+        return self.next is not None
 
     def find(self, key):
         if self.content == key:
             return self
-        elif self.next is not None:
+        elif self.has_next:
             return self.next.find(key)
+
+    def remove_next(self):
+        if self.has_next and self.next.has_next:
+            self.next = self.next.next
 
 
 if __name__ == "__main__":
