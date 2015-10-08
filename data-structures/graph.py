@@ -25,30 +25,30 @@ class graph(object):
     >>> ug.add_vertex('dog')
     >>> ug.add_edge('cat', 'dog')
     >>> ug.vertices['dog']
-    set(['cat'])
+    {'cat': 1}
     >>> ug.vertices['cat']
-    set(['dog'])
+    {'dog': 1}
     >>> ug.remove_vertex('dog')
     >>> ug.vertices['cat']
-    set([])
+    {}
 
     >>> dg = graph(kind='directed')
     >>> dg.add_vertex('cat')
     >>> dg.add_vertex('dog')
-    >>> dg.add_edge('cat', 'dog')
+    >>> dg.add_edge('cat', 'dog', 3)
     >>> dg.vertices['cat']['out']
-    set(['dog'])
+    {'dog': 3}
     >>> dg.vertices['cat']['in']
-    set([])
+    {}
     >>> dg.vertices['dog']['out']
-    set([])
+    {}
     >>> dg.vertices['dog']['in']
-    set(['cat'])
+    {'cat': 3}
     >>> dg.remove_edge('cat', 'dog')
     >>> dg.vertices['cat']['out']
-    set([])
+    {}
     >>> dg.vertices['dog']['in']
-    set([])
+    {}
 
     '''
     def __init__(self, kind=UNDIRECTED):
@@ -60,34 +60,34 @@ class graph(object):
 
     def add_vertex(self, v):
         if self.kind == UNDIRECTED:
-            self.vertices[v] = set()
+            self.vertices[v] = {}
         else:
-            self.vertices[v] = {OUT: set(), IN: set()}
+            self.vertices[v] = {OUT: {}, IN: {}}
 
-    def add_edge(self, v1, v2):
+    def add_edge(self, v1, v2, weight=1):
         if self.kind == UNDIRECTED:
-            self.vertices[v1].add(v2)
-            self.vertices[v2].add(v1)
+            self.vertices[v1][v2] = weight
+            self.vertices[v2][v1] = weight
         else:
-            self.vertices[v1][OUT].add(v2)
-            self.vertices[v2][IN].add(v1)
+            self.vertices[v1][OUT][v2] = weight
+            self.vertices[v2][IN][v1] = weight
 
     def remove_vertex(self, v):
         del self.vertices[v]
         for vertex in self.vertices:
             if self.kind == UNDIRECTED:
-                self.vertices[vertex].remove(v)
+                del self.vertices[vertex][v]
             else:
-                self.vertices[vertex][IN].remove(v)
-                self.vertices[vertex][OUT].remove(v)
+                del self.vertices[vertex][IN][v]
+                del self.vertices[vertex][OUT][v]
 
     def remove_edge(self, v1, v2):
         if self.kind == UNDIRECTED:
-            self.vertices[v1].remove(v2)
-            self.vertices[v2].remove(v1)
+            del self.vertices[v1][v2]
+            del self.vertices[v2][v1]
         else:
-            self.vertices[v1][OUT].remove(v2)
-            self.vertices[v2][IN].remove(v1)
+            del self.vertices[v1][OUT][v2]
+            del self.vertices[v2][IN][v1]
 
 
 if __name__ == "__main__":
