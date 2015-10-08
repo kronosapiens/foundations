@@ -9,3 +9,6 @@ Foundations of Computer Science
 # Algorithms
 - mergesort
 - depth-first search
+
+# To run doctests:
+$ python -m <dir>.<module>
