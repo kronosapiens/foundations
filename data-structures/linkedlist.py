@@ -25,7 +25,7 @@ class node(object):
     >>> ll.next.content
     'monkey'
     '''
-    def __init__(self, content):
+    def __init__(self, content=None):
         self.content = content
         self.next = None
 
@@ -35,6 +35,10 @@ class node(object):
     @property
     def has_next(self):
         return self.next is not None
+
+    @property
+    def has_content(self):
+        return self.content is not None
 
     def find(self, key):
         if self.content == key:
