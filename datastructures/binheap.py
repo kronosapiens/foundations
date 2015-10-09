@@ -11,7 +11,7 @@ class binheap(object):
         occurs inside the _compare and _swap functions, where indices are
         adjusted.
 
-    >>> bh = binheap([4, 2, 9, 1]) # Should become [1, 2, 4, 9]
+    >>> bh = binheap([4, 2, 9, 1])
     >>> bh.extract()
     1
     >>> bh.extract()
@@ -23,16 +23,18 @@ class binheap(object):
     >>> bh.extract()
     4
     '''
-    def __init__(self, data, kind='min'):
+    def __init__(self, data, f=None, kind='min'):
         self._kind = kind
+        self.f = f if (f is not None) else lambda x: x
         self._heap = []
         self._construct_heap(data)
 
     def _compare(self, a, b):
+        f, heap = self.f, self._heap
         if self._kind == 'min':
-            return self._heap[a-1] <= self._heap[b-1]
+            return f(heap[a-1]) <= f(heap[b-1])
         else:
-            return self._heap[a-1] >= self._heap[b-1]
+            return f(heap[a-1]) >= f(heap[b-1])
 
     def _swap(self, a, b):
         temp = self._heap[a-1]

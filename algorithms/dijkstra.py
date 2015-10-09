@@ -1,4 +1,5 @@
 from datastructures.graph import graph
+from datastructures.binheap import binheap
 
 def djisktra(graph, start):
     '''
