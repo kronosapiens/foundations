@@ -1,7 +1,7 @@
 from datastructures.graph import graph
 from datastructures.binheap import binheap
 
-def djisktra(graph, start):
+def djisktra(graph, s):
     '''
     Dijkstra's algorith implementation.
 
@@ -22,9 +22,19 @@ def djisktra(graph, start):
     ['C', 'B', 'A']
     '''
     V = set(graph.vertices.keys())
-    S = {start}
-    dist = {v: 0 for v in V}
+    S = set()
+
+    dist = [(v, float('inf')) for v in V]
+    dist.append((s,0))
+    heap = binheap(dist, fkey=lambda x: x[0], fval=lambda x: x[1], kind='min')
     prev = {}
+
+    while heap.size:
+        u, dist = heap.extract()
+        S = S.add(u)
+        edges = graph.vertices[u]
+        for e in edges:
+            heap.update((e, dist+edges[e]))
 
 
 
