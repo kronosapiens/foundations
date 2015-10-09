@@ -64,13 +64,13 @@ class graph(object):
         else:
             self.vertices[v] = {OUT: {}, IN: {}}
 
-    def add_edge(self, v1, v2, weight=1):
+    def add_edge(self, v1, v2, w=1):
         if self.kind == UNDIRECTED:
-            self.vertices[v1][v2] = weight
-            self.vertices[v2][v1] = weight
+            self.vertices[v1][v2] = w
+            self.vertices[v2][v1] = w
         else:
-            self.vertices[v1][OUT][v2] = weight
-            self.vertices[v2][IN][v1] = weight
+            self.vertices[v1][OUT][v2] = w
+            self.vertices[v2][IN][v1] = w
 
     def remove_vertex(self, v):
         del self.vertices[v]
@@ -89,6 +89,11 @@ class graph(object):
             del self.vertices[v1][OUT][v2]
             del self.vertices[v2][IN][v1]
 
+    def find_sinks(self):
+        pass
+
+    def find_sources(self):
+        pass
 
 if __name__ == "__main__":
     import doctest
