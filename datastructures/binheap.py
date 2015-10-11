@@ -8,11 +8,8 @@ class binheap(object):
         O(1) direct update
 
     Details and Abstractions:
-        - Functions assume indices starting at 1. Actual array access
-        occurs inside the _compare and _swap functions, where indices are
-        adjusted.
-        - Heap manipulation uses indices (integers) to represent nodes.
-        Actual node contents are handled in _compare and _swap.
+        - Functions assume indices starting at 1. Helper functions _to_arr()
+        and _to_tree() convert indices from 1 to 0 and vice versa.
 
     >>> bh = binheap([4, 2, 9, 1])
     >>> bh.extract()
@@ -58,29 +55,25 @@ class binheap(object):
         if loc is not None:
             return self._to_tree(loc)
 
-    def _get_heap(self, idx):
-        return self._heap[idx-1] # Encapsulate array access
-
-    def _set_heap(self, idx, node):
-        self._heap[idx-1] = node # Encapsulate array access
-
     def _compare(self, a, b):
         '''True result means a is preferred to b given comparison operator.
         '''
         f, heap = self.fval, self._heap
+        a, b = self._to_arr(a), self._to_arr(b)
         if self._kind == 'min':
-            return f(heap[a-1]) <= f(heap[b-1])
+            return f(heap[a]) <= f(heap[b])
         else:
-            return f(heap[a-1]) >= f(heap[b-1])
+            return f(heap[a]) >= f(heap[b])
 
     def _swap(self, a, b):
         f, heap, location = self.fkey, self._heap, self._location
-        a_val = heap[a-1]
-        b_val = heap[b-1]
-        heap[a-1] = b_val
-        heap[b-1] = a_val
-        location[f(a_val)] = b-1
-        location[f(b_val)] = a-1
+        a, b = self._to_arr(a), self._to_arr(b)
+        a_val = heap[a]
+        b_val = heap[b]
+        heap[a] = b_val
+        heap[b] = a_val
+        location[f(a_val)] = b
+        location[f(b_val)] = a
 
     def _replace(self, idx, new):
         '''Replace node at abstract location=idx with new node.
@@ -110,15 +103,15 @@ class binheap(object):
         self._bubble_up(self.size)
 
     def peek(self):
-        return self._heap[0]
+        return self._heap[self._to_arr(1)]
 
     def extract(self):
         root = self.peek()
         leaf = self._heap.pop()
         if self.size:
-            self._heap[0] = leaf
+            self._heap[self._to_arr(1)] = leaf
             del self._location[self.fkey(root)]
-            self._location[self.fkey(leaf)] = 0
+            self._location[self.fkey(leaf)] = self._to_arr(1)
             self._bubble_down(1)
         return root
 

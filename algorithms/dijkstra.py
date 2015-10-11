@@ -54,6 +54,7 @@ def dijkstra(graph, s):
                 new_dist = udist + edges[v]
                 if new_dist < vdist:
                     heap.update((v, new_dist, u))
+
     return {'dist': dist, 'prev': prev}
 
 
