@@ -1,42 +1,60 @@
 from datastructures.graph import graph
 from datastructures.binheap import binheap
 
-def djisktra(graph, s):
+def dijkstra(graph, s):
     '''
     Dijkstra's algorith implementation.
 
     Objectives:
 
     >>> g = graph(kind='undirected')
-    >>> [g.add_vertex(v) for v in ['A', 'B', 'C', 'D']]
+    >>> g.add_vertex('A')
+    >>> g.add_vertex('B')
+    >>> g.add_vertex('C')
+    >>> g.add_vertex('D')
     >>> g.add_edge('A', 'B', w=1)
     >>> g.add_edge('A', 'C', w=3)
     >>> g.add_edge('B', 'C', w=1)
     >>> g.add_edge('B', 'D', w=3)
     >>> g.add_edge('C', 'D', w=1)
-    >>> paths = djikstra(g, 'A')
-    >>> path['D']
-    ['A', 'B', 'C', 'D']
-    >>> paths = djikstra(g, 'C')
-    >>> paths['A']
-    ['C', 'B', 'A']
+    >>> paths = dijkstra(g, 'A')
+    >>> paths['dist']['D']
+    3
+    >>> paths['prev']['D']
+    'C'
+    >>> paths['dist']['C']
+    2
+    >>> paths['prev']['C']
+    'B'
+    >>> paths = dijkstra(g, 'C')
+    >>> paths['dist']['A']
+    2
+    >>> paths['prev']['A']
+    'B'
     '''
     V = set(graph.vertices.keys())
     S = set()
-
-    dist = [(v, float('inf')) for v in V]
-    dist.append((s,0))
-    heap = binheap(dist, fkey=lambda x: x[0], fval=lambda x: x[1], kind='min')
+    dist = {}
     prev = {}
 
+    initd = [(v, float('inf'), None) for v in V-{s}]
+    initd.append((s, 0, None))
+    heap = binheap(initd,fkey=lambda x: x[0], fval=lambda x: x[1], kind='min')
+
     while heap.size:
-        u, dist = heap.extract()
-        S = S.add(u)
+        u, udist, uprev = heap.extract()
+        S.add(u)
+        dist[u] = udist
+        prev[u] = uprev
         edges = graph.vertices[u]
-        for e in edges:
-            heap.update((e, dist+edges[e]))
-
-
+        for v in edges:
+            vnode = heap.find(v)
+            if vnode:
+                v, vdist, vprev = vnode
+                new_dist = udist + edges[v]
+                if new_dist < vdist:
+                    heap.update((v, new_dist, u))
+    return {'dist': dist, 'prev': prev}
 
 
 if __name__ == "__main__":

@@ -23,15 +23,16 @@ class graph(object):
     >>> ug = graph(kind='undirected')
     >>> ug.add_vertex('cat')
     >>> ug.add_vertex('dog')
+    >>> ug.add_vertex('ape')
     >>> ug.add_edge('cat', 'dog')
+    >>> ug.add_edge('cat', 'ape')
+    >>> ug.vertices['cat']
+    {'dog': 1, 'ape': 1}
     >>> ug.vertices['dog']
     {'cat': 1}
-    >>> ug.vertices['cat']
-    {'dog': 1}
     >>> ug.remove_vertex('dog')
     >>> ug.vertices['cat']
-    {}
-
+    {'ape': 1}
     >>> dg = graph(kind='directed')
     >>> dg.add_vertex('cat')
     >>> dg.add_vertex('dog')
@@ -73,21 +74,21 @@ class graph(object):
             self.vertices[v2][IN][v1] = w
 
     def remove_vertex(self, v):
-        del self.vertices[v]
+        self.vertices.pop(v, None)
         for vertex in self.vertices:
             if self.kind == UNDIRECTED:
-                del self.vertices[vertex][v]
+                self.vertices[vertex].pop(v, None)
             else:
-                del self.vertices[vertex][IN][v]
-                del self.vertices[vertex][OUT][v]
+                self.vertices[vertex][IN].pop(v, None)
+                self.vertices[vertex][OUT].pop(v, None)
 
     def remove_edge(self, v1, v2):
         if self.kind == UNDIRECTED:
-            del self.vertices[v1][v2]
-            del self.vertices[v2][v1]
+            self.vertices[v1].pop(v2, None)
+            self.vertices[v2].pop(v1, None)
         else:
-            del self.vertices[v1][OUT][v2]
-            del self.vertices[v2][IN][v1]
+            self.vertices[v1][OUT].pop(v2, None)
+            self.vertices[v2][IN].pop(v1, None)
 
     def find_sinks(self):
         pass

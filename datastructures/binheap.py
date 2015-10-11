@@ -5,6 +5,7 @@ class binheap(object):
     Objectives:
         O(logn) insert
         O(logn) extract
+        O(1) direct update
 
     Details and Abstractions:
         - Functions assume indices starting at 1. Actual array access
@@ -40,6 +41,29 @@ class binheap(object):
     def size(self):
         return len(self._heap)
 
+    def _to_tree(self, idx):
+        '''Convert from concrete array (0) index to abstract tree (1) index
+        '''
+        return idx+1
+
+    def _to_arr(self, idx):
+        '''Convert from abstract tree (1) index to concrete array (0) index
+        '''
+        return idx-1
+
+    def _get_loc(self, key):
+        '''Get abstract location of node in tree. Encapsulate location access.
+        '''
+        loc = self._location.get(key, None)
+        if loc is not None:
+            return self._to_tree(loc)
+
+    def _get_heap(self, idx):
+        return self._heap[idx-1] # Encapsulate array access
+
+    def _set_heap(self, idx, node):
+        self._heap[idx-1] = node # Encapsulate array access
+
     def _compare(self, a, b):
         '''True result means a is preferred to b given comparison operator.
         '''
@@ -49,11 +73,36 @@ class binheap(object):
         else:
             return f(heap[a-1]) >= f(heap[b-1])
 
-    def _find(self, key):
-        return self._location[key]+1 # From 0-index to 1-index
+    def _swap(self, a, b):
+        f, heap, location = self.fkey, self._heap, self._location
+        a_val = heap[a-1]
+        b_val = heap[b-1]
+        heap[a-1] = b_val
+        heap[b-1] = a_val
+        location[f(a_val)] = b-1
+        location[f(b_val)] = a-1
 
     def _replace(self, idx, new):
-        self._heap[idx-1] = new
+        '''Replace node at abstract location=idx with new node.
+        '''
+        self._heap[self._to_arr(idx)] = new
+
+    def find(self, key):
+        '''Return node, regardless of location in tree. Uses real location.
+        '''
+        loc = self._get_loc(key)
+        if loc:
+            return self._heap[self._to_arr(loc)]
+
+    def update(self, new):
+        node = self._get_loc(self.fkey(new))
+        if node:
+            self._replace(node, new)
+            parent = node/2
+            if self._compare(node, parent):
+                self._bubble_up(node)
+            else:
+                self._bubble_down(node)
 
     def insert(self, node):
         self._heap.append(node)
@@ -66,28 +115,12 @@ class binheap(object):
     def extract(self):
         root = self.peek()
         leaf = self._heap.pop()
-        self._heap[0] = leaf
-        self._bubble_down(0)
-        del self._location[self.fkey(root)]
+        if self.size:
+            self._heap[0] = leaf
+            del self._location[self.fkey(root)]
+            self._location[self.fkey(leaf)] = 0
+            self._bubble_down(1)
         return root
-
-    def update(self, new):
-        node = self._find(self.fkey(new))
-        self._replace(node, new)
-        parent = node/2
-        if self._compare(node, parent):
-            self._bubble_up(node)
-        else:
-            self._bubble_down(node)
-
-    def _swap(self, a, b):
-        f, heap, location = self.fkey, self._heap, self._location
-        a_val = heap[a-1]
-        b_val = heap[b-1]
-        heap[a-1] = b_val
-        heap[b-1] = a_val
-        location[f(a_val)] = b-1
-        location[f(b_val)] = a-1
 
     def _bubble_up(self, child):
         if child > 1:
@@ -102,7 +135,6 @@ class binheap(object):
         winner = root
         right = root*2
         left = root*2+1
-
         if left <= self.size and self._compare(left, winner):
             winner = left
         if right <= self.size and self._compare(right, winner):
