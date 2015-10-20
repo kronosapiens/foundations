@@ -1,6 +1,5 @@
-from Queue import Queue
-
 from datastructures.graph import graph
+from datastructures.queue import queue
 
 def bfs(graph, root):
     """Runs breadth-first search through a graph, starting at a given root.
@@ -40,19 +39,19 @@ def bfs(graph, root):
     """
     V = set(graph.vertices.keys()) - {root}
     explored = {node: 0 for node in V}
-    q = Queue()
+    q = queue()
     prev = {root: None}
     dist = {root: 0}
     explored[root] = 1
-    q.put(root)
-    while not q.empty():
-        node = q.get()
+    q.push(root)
+    while q.size:
+        node = q.pop()
         for neighbor in graph.vertices[node]:
             if not explored[neighbor]:
                 explored[neighbor] = 1
                 prev[neighbor] = node
                 dist[neighbor] = dist[node] + 1
-                q.put(neighbor)
+                q.push(neighbor)
     return prev, dist
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
-from Queue import Queue
-
 from datastructures.graph import graph
+from datastructures.queue import queue
 
 def is_bipartite(graph):
     """Runs breadth-first search through a graph to determine if a graph
@@ -36,22 +35,22 @@ def is_bipartite(graph):
     """
     V = set(graph.vertices.keys())
     explored = {node: 0 for node in V}
-    q = Queue()
+    q = queue()
     color = {}
     curr_color = 0
 
     s = V.pop()
     explored[s] = 1
     color[s] = curr_color
-    q.put(s)
-    while not q.empty():
-        node = q.get()
+    q.push(s)
+    while q.size:
+        node = q.pop()
         curr_color = 0 if color[node] else 1
         for neighbor in graph.vertices[node]:
             if not explored[neighbor]:
                 explored[neighbor] = 1
                 color[neighbor] = curr_color
-                q.put(neighbor)
+                q.push(neighbor)
             elif color[neighbor] == color[node]:
                 return False
     return True
