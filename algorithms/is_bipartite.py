@@ -3,14 +3,14 @@ from datastructures.queue import queue
 
 def is_bipartite(graph):
     """Runs breadth-first search through a graph to determine if a graph
-        is bipartite. Uses 2-color test.
+        is bipartite. Uses 2-color test:
+        https://en.wikipedia.org/wiki/Bipartite_graph#Testing_bipartiteness
 
     Objectives:
         O(m + n) running time (linear)
 
     Args:
         graph: the given graph, with nodes encoded as strings.
-        root: the node from which to start the search.
 
     Returns:
         True if a graph is bipartite, False otherwise.
