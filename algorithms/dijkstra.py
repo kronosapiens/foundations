@@ -17,19 +17,19 @@ def dijkstra(graph, s):
     >>> g.add_edge('B', 'C', w=1)
     >>> g.add_edge('B', 'D', w=3)
     >>> g.add_edge('C', 'D', w=1)
-    >>> paths = dijkstra(g, 'A')
-    >>> paths['dist']['D']
+    >>> dist, prev = dijkstra(g, 'A')
+    >>> dist['D']
     3
-    >>> paths['prev']['D']
+    >>> prev['D']
     'C'
-    >>> paths['dist']['C']
+    >>> dist['C']
     2
-    >>> paths['prev']['C']
+    >>> prev['C']
     'B'
-    >>> paths = dijkstra(g, 'C')
-    >>> paths['dist']['A']
+    >>> dist, prev = dijkstra(g, 'C')
+    >>> dist['A']
     2
-    >>> paths['prev']['A']
+    >>> prev['A']
     'B'
     '''
     V = set(graph.vertices.keys())
@@ -55,7 +55,7 @@ def dijkstra(graph, s):
                 if new_dist < vdist:
                     heap.update((v, new_dist, u))
 
-    return {'dist': dist, 'prev': prev}
+    return dist, prev
 
 
 if __name__ == "__main__":

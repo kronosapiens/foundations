@@ -1,20 +1,20 @@
-Daniel Kronovet
+Daniel Kronovet [dbk2123]
 
-dbk2123
-
-CSOR w4246 HW02
+CSOR W4246 HW02
 
 10/19/2015
 
 ## Problem 1
 
+This problem asks us to compute the *number* of shortest `s-t` paths in `G`.
+
 For this problem, we will use a modified breadth-first search algorithm, in which `s` is the start node and `t` is the destination node.
 
-The first modification adds a new array, `numpaths`, which store the number of shortest paths for any given node `u`.
+The first modification adds a new array, `numpaths`, which stores the **number** of shortest paths for any given node `u`.
 
-The second modification reorganizes the innermost loop such that some processing occurs for each node `v` regardless of whether that `v` has already been discovered.  This processing includes checking to see if distance `s-u-v` is less or equal to any previous `s-v` paths. If it is less than, then this path becomes the shortest path and `numpaths[v]` is set to 1. If it is equal, then `numpaths[v]` is incremented by one. This change is important because it allows for the discovery of multiple shortest paths by allowing for the reuse of nodes already discovered.
+The second modification reorganizes the innermost loop such that *some* processing occurs for each node `v`, regardless of whether that `v` has already been discovered.  This processing includes checking to see if distance `s-u-v` is less or equal to any previous `s-v` paths. If it is less than, then this path becomes the shortest path and `numpaths[v]` is set to 1. If it is equal, then `numpaths[v]` is incremented by one. This change is important because it allows for the discovery of multiple shortest paths by allowing for the reuse of nodes already discovered.
 
-The solution given works for undirected graphs with weighted edges. For an unweighted graph, set all `w=1`. This solution preserves the O(n + m) running time of the original bfs algorithm, as the processing on each edge takes O(1) time.
+The solution given works for undirected graphs with weighted edges. For an unweighted graph, the solution is the same, simply set all `w=1`. This solution preserves the O(n + m) running time of the original bfs algorithm, as the processing on each edge takes O(1) time.
 
 ```
 modbfs(G=[V, E], s, t):
@@ -28,14 +28,14 @@ modbfs(G=[V, E], s, t):
     WHILE size(q) > 0 DO
         u = dequeue(q)
         FOR v, w in E[u] DO
-            IF dist[v] > dist [u] + w DO
-                dist [v] = dist [u] + w
-                numpaths [v] = 1
-            ELSIF dist [v] == dist [u] + w DO
-                numpaths [v] += 1
+            IF dist[v] > dist[u] + w DO
+                dist[v] = dist[u] + w
+                numpaths[v] = 1
+            ELSIF dist[v] == dist[u] + w DO
+                numpaths[v] += 1
             ENDIF
-            IF disc [v] == 0 DO
-                disc [v] = 1
+            IF disc[v] == 0 DO
+                disc[v] = 1
                 enqueue(q, v)
             ENDIF
         ENDFOR
@@ -46,11 +46,13 @@ modbfs(G=[V, E], s, t):
 
 ## Problem 2
 
+This problem asks us to develop an algorithm to determine which road among a list of proposed new roads would provide the greatest reduction in driving time between cities `s` and `t`.
+
 For this problem, we will use an extended version of Dijkstra’s algorithm.
 
-The first extension involves the creation of an additional array using the results from Dijkstra’s algorithm. This array, diff, contains the edge distances between each node `v` and its previous node u in the shortest path from `s-v`.
+The first extension involves the creation of an additional array using the results from Dijkstra’s algorithm. This array, diff, contains the edge distances between each node `v` and its previous node `u` in the shortest path from `s-v`. This array allows us to reconstruct the distance of a path between two nodes after modifying some of the nodes in that path. 
 
-The second extension loops through every proposed road edge `(u,v,l)` and calculates the shortest `s-t` path using this new road. The greedy algorithm will check this shortest path and compare this new path to the existing shortest path. If the new path is shorter, than the new path will replace the old path. Once all paths have been analyzed, the shortest path is returned.
+The second extension loops through every proposed road edge `(u,v,l) in E'` and calculates the shortest `s-t` path using this new road. The greedy algorithm will check this shortest path and compare this new path to the existing shortest path. If the new path is shorter (if `savings > bestsavings`), than the new path will replace the old path. Once all paths have been analyzed, the shortest path is returned.
 
 
 ```
@@ -65,18 +67,21 @@ chooseroad(G=[V, E], E', s, t)
     tuple bestroad = nil
     int bestsavings = 0
     FOR u, v, l in E' DO
-        oldprev = prev[u]
-        olddiff = diff[u]
-        totaldist = dist[t]
-        prev[v] = u
-        diff[v] = l
-        x = t
+        int oldprev = prev[v]
+        int olddiff = diff[v]
+        int olddist = dist[t]
+        int newdist = 0       
+        int prev[v] = u
+        int diff[v] = l
+        int x = t
         WHILE prev[x] != s DO
-            totaldist -= diff[x]
+            newdist += diff[x]
             x = prev[x]
         ENDWHILE
-        IF totaldist < bestsavings DO
+        int savings = olddist - newdist
+        IF savings > bestsavings DO
             bestroad = (u,v,l)
+            bestsavings = savings
         ENDIF
         prev[v] = oldprev # Restore initial values
         diff[v] = olddiff
@@ -87,9 +92,11 @@ chooseroad(G=[V, E], E', s, t)
 
 ## Problem 3
 
-In this problem, we use a modified version of Dijkstra's algorithm. First, we will assume the algorithm is implemented using a binheap (Dijkstra v3 from class).
+In this problem, we develop an algorithm to select an `s-v` path with the smallest number of edges in cases where there are multiple shortest paths.
 
-The modification includes the addition of a new array, `best`, which records the number of edges in the shortest `s-v` path for an arbitrary `v`. Then, at every iteration, we check the edges adjacent to the new node v (the inbound edges, `indegree(v)`). If any of the adjacent nodes `x` have been discovered, we examine the length of the path `s-x-v`. If this path is the same distance as the default `s-u-v` path (it cannot be shorter), we compare the number of edges in the two paths. If `s-x-v` has fewer edges than `s-u-v`, it replaces `s-u-v` as the correct `s-v` path.
+We use a modified version of Dijkstra's algorithm. First, we will assume the algorithm is implemented using a binheap (Dijkstra v3 from class).
+
+The modification includes the addition of a new array, `best`, which records the number of edges in the shortest `s-u` path for an arbitrary `u`. Then, at every iteration, we check the edges adjacent to the new node `u` (the inbound edges, `indegree(u)`). If any of the adjacent nodes `x` have been discovered, we examine the length of the path `s-x-u`. If this path is the same distance as the default `s-v-u` path (it cannot be shorter, due to the properties of Dijkstra's algorithm), we compare the number of edges in the two paths. If `s-x-u` has fewer edges than `s-v-u`, it replaces `s-v-u` as the preferred shortest `s-u` path.
 
 This modification does not affect the running time of Dijkstra's algorithm, which in this case is O(mlogn). This is because we **already** loop through `deg(u)` every time we extract `u` from the heap. All we are doing is adding a few O(1) operations to the loop, which does not affect the overall time complexity.
 
@@ -120,21 +127,36 @@ chooseroad(G=[V, E], s)
             ENDIF
         ENDFOR
     ENDWHILE
+    return best
 ```
 
 ## Problem 4
 
-In this problem, we use a dynamic programming approach to determining the optimal segmentation for string `y`. Note that `y[i:j]` represents a substring of `y`, spanning characters `i` to `j`.
+In this problem, we use a dynamic programming approach to determining the optimal segmentation for string `y`. Note that `y[i:j]` represents a substring of `y`, spanning characters `i` to `j` inclusive.
 
-Given that each call to `q()` is an O(1) operation, as is every call to `M[]`, finding an optimal value for `M[j]` is an O(n) operation, requiring a loop through every `i`, subject to `1 <= i <= j`. As we must find the optimal value for all `1 <= j <= n`, this algorithm runs in O(n^2) time.
+Given that each call to `q(y[i:j])` is an O(1) operation, as is every call to `M[i]`, finding an optimal value for `M[j]` is an O(n) operation, requiring a loop through every `i`, subject to `1 <= i <= j`. As we must find the optimal value for all `1 <= j <= n`, this algorithm runs in O(n^2) time.
+
+To print out the segmentation indices, we loop back through the matrix `M`, appending the slices corresponding to the segmentations of maximum value.
 
 ```
 wordsearch(y)
     array M = [0]
+    int n = len(y)
+    
     FOR j = 1 to n DO
         M[j] = max(i){q(y[i:j]) + M(i-1)} # 1 <= i <= j
     ENDFOR
-    return M
+    
+    array ret = []
+    idx = n
+    FOR i = n to 1 DO
+    	IF M[idx] == M[i] + q(y[i:idx]) DO
+    		append(ret, (i, idx))
+    		idx = i-1
+    	ENDIF
+    ENDFOR
+    
+    return ret
 ```
 
 ## Problem 5
@@ -160,7 +182,19 @@ balancedpartition(A, k)
             M[i,j] = min(c){max(abs(sum(A[c:j])-avg), M[i-1,j-c])}  # 1<=c<=j
         ENDFOR
     ENDFOR
-
+    
+    array ret = []
+    int part = k
+    int size = n
+    FOR j = n to 1 DO
+    	IF M[idx, part] == max(abs(sum(A[j:size])-avg), M[part-1, size-j])} DO
+    		append(ret, (j, idx))
+    		part -= 1
+    		size = j-1
+    	ENDIF
+    ENDFOR
+    
+    return ret
 ```
 
 
