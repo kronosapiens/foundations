@@ -39,7 +39,7 @@ def dijkstra(graph, s):
 
     initd = [(v, float('inf'), None) for v in V-{s}]
     initd.append((s, 0, None))
-    heap = binheap(initd,fkey=lambda x: x[0], fval=lambda x: x[1], kind='min')
+    heap = binheap(initd, fkey=lambda x: x[0], fval=lambda x: x[1], kind='min')
 
     while heap.size:
         u, udist, uprev = heap.extract()

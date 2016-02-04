@@ -25,9 +25,9 @@ class node(object):
     >>> ll.next.content
     'monkey'
     '''
-    def __init__(self, content=None):
+    def __init__(self, content=None, next=None):
         self.content = content
-        self.next = None
+        self.next = next
 
     def __repr__(self):
         return 'Content: ({}), next = {}'.format(self.content, self.has_next)

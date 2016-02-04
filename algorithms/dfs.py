@@ -1,6 +1,6 @@
 def dfs(graph, root):
-    """Runs depth-first search through a graph, starting at a given root. Neighboring
-    nodes are processed in alphabetical order.
+    """Runs recusrive depth-first search through a graph, starting at a given
+    root. Neighboring nodes are processed in alphabetical order.
 
     Objectives:
         O(m + n) running time
