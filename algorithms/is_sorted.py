@@ -19,6 +19,11 @@ Notes:
     visiting nodes twice, which it accomplishes by popping a node from
     the stack before considering its right child.
 
+    While implementing this, I began with the assumption that I would need
+    to maintain an explicit stack, and pop parents from the stack only once
+    I had traversed both of their child subtrees. Looking at the canonical
+    implementation, this assumption was incorrect.
+
     Key takeaways are that special None handling can be unecessary and that
     considering None as a first-class object (in this case, as a node)
     can result in more succint code. Also, that while there may seem
