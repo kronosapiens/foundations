@@ -10,6 +10,23 @@ Args:
 Returns:
     True if the elements of the tree are sorted, False otherwise.
 
+Notes:
+    My implemention performed some bookkeping and leaf-checking which
+    the canonical implementation completely avoided. This was
+    accomplished by separating the updating of the 'node' variable
+    from the pushing of nodes onto the stack, allowing for None leaves
+    to be treated as ordinary nodes. Also, the canonical version avoids
+    visiting nodes twice, which it accomplishes by popping a node from
+    the stack before considering its right child.
+
+    Key takeaways are that special None handling can be unecessary and that
+    considering None as a first-class object (in this case, as a node)
+    can result in more succint code. Also, that while there may seem
+    to be a 1:1 relationship between the start/end of loops and
+    popping/pushing from a stack or queue, these operations may be
+    seperable, and in such cases such separation can allow for a wider
+    variety of behaviors to be encoded in fewer lines.
+
 >>> bt = binary_tree(6)
 >>> bt.set_left(2)
 >>> bt.left.set_left(1)
@@ -81,6 +98,7 @@ def canonical_is_sorted(node):
                 curr_max = node.value
 
             node = node.right
+
     return True
 
 is_sorted = my_is_sorted
