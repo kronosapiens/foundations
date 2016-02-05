@@ -15,6 +15,8 @@ class stack(object):
     >>> mystack.pop()
     'dog'
     >>> mystack.push('ape')
+    >>> mystack.peek()
+    'ape'
     >>> mystack.pop()
     'ape'
     >>> mystack.pop()
@@ -32,6 +34,15 @@ class stack(object):
             element = self.head.content
             self.head = self.head.next
             return element
+
+    def peek(self):
+        if self.head is not None:
+            return self.head.content
+
+    @property
+    def is_empty(self):
+        return self.head is None
+
 
 
 if __name__ == "__main__":
