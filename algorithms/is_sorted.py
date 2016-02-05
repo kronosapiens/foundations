@@ -22,7 +22,10 @@ Notes:
     While implementing this, I began with the assumption that I would need
     to maintain an explicit stack, and pop parents from the stack only once
     I had traversed both of their child subtrees. Looking at the canonical
-    implementation, this assumption was incorrect.
+    implementation, this assumption was incorrect. Upon reflection, I had
+    been incorrectly remembering lessons from algorithms class, in which we
+    used DFS to achieve topological sorting by recording the times in which
+    nodes were popped and pushed from the stack.
 
     Key takeaways are that special None handling can be unecessary and that
     considering None as a first-class object (in this case, as a node)
@@ -30,7 +33,9 @@ Notes:
     to be a 1:1 relationship between the start/end of loops and
     popping/pushing from a stack or queue, these operations may be
     seperable, and in such cases such separation can allow for a wider
-    variety of behaviors to be encoded in fewer lines.
+    variety of behaviors to be encoded in fewer lines. Finally, a class of
+    algorithm can be implemented in different ways depending on
+    the specifics of the problem.
 
 >>> bt = binary_tree(6)
 >>> bt.set_left(2)
