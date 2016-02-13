@@ -277,9 +277,12 @@ To get started:
 1. [Make a GitHub Account](https://github.com/). Everyone who writes programs for anything has one. It's like having an email address. If you don't have one people will think you're weird and won't hire you.
 2. [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). You can install just the command-line program or the fancy GUI.
 
-For this class, it is strongly advised that you also:
+If taking a class taught via github, it is strongly advised that you also:
 
 3. "Fork" the course repository. What this basically means is that you're going to copy the course repository to your own account.
 4. Clone the forked repository to your computer.
-5. Point RStudio's default working directory to the course repository.
-6. Avoid approximately half of your classmate's problems.
+5. Create an "upstream remote" pointing to the original course repository.
+6. Point RStudio's default working directory to the course repository.
+7. Avoid many problems.
+
+Whenever you want to sync your repository with the course repository, run `git pull upstream master` to pull changes from the upstream repository into your fork.
