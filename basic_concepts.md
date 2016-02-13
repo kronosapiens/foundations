@@ -97,13 +97,18 @@ When you are in a directory, every file argument is evaluated as though the curr
 /dir1$ python file1.py
 'Hello world'
 
+/dir1$ cd ..
+/$ python file1.py
+usr/bin/python: can't open file 'file1.py': [Errno 2] No such file or directory
 ```
 
-Here, we saw two programs run on two arguments.
+Here, we saw two programs run on three arguments.
 
 1. First, we ran the `python` program on argument `dir/file1.py`, a python file.
 2. Then, we ran the `cd` (change directory) program on argument `dir1`, also a file (in Unix, [everything is a file](https://en.wikipedia.org/wiki/Everything_is_a_file), even a directory.) Note how the command prompt changes to reflect the fact that we moved through the filesystem.
 3. We ran the `python` program on argument `file1.py`, the same python file.
+4. We ran the `cd` program on `..`, representing the current *parent directory*.
+5. We ran the `python` program on argument `file1.py`, but received an error, because there is no such file in our current location.
 
 Hopefully this example will illustrate the nature of using a shell to navigate and executing commands in a filesystem.
 
