@@ -233,15 +233,16 @@ Imagine you want to do some R programming using RStudio. You begin by double-cli
 2. While starting up, RStudio checked its settings file to see what its current working directory should be (`~` by default).
 3. When you ran your code in the GUI, RStudio spawned a new process in the context of that working directory, which executed your code and returned the result. This is known as a REPL (a "Read-Evaluate-Print" Loop).
 
-Now, imagine your code references a data file -- say, a JSON file containined a bunch of tweets. This file is stored in some location. When you're writing your R code, the location you give *must be relative to the current working directory of the RStudio process*.
+Now, imagine your code references a data file -- say, a JSON file containined a bunch of tweets. This file is stored in some location. When you're writing your R code, the location you give *must be relative to the file in which it is called.*
 
-For example, if your working directory is `~`, and your code looks like this:
+For example, if your working directory is `~`, and your file, `code/script.R`, looks like this:
 
 ```
+# script.R
 tweets = parseTweets('tweets.json')
 ```
 
-Then RStudio will run this command on the file located at `~/tweets.json`. If the file is elsewhere, you'll get an error.
+Then RStudio will run this command on the file located at `~/code/tweets.json`. If the file is elsewhere, you'll get an error.
 
 ## Git and GitHub
 
