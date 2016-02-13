@@ -4,7 +4,7 @@ The goal of this guide is to explain in a high-level but useful way the core con
 
 ## Understanding the Filesystem
 
-The most important thing to remember when doing any sort of programming is that every command is run in the context of some **location**. Your Desktop is a location. Your Documents folder is a location. Everything on your computer has a location, and locations are all relative. The whole thing is called a **filesystem**. Here is an illustration of the typical Mac OSX filesystem (Windows filesystems are fairly similar):
+The most important thing to remember when doing any sort of programming is that every command is run in the context of some **location**. Your Desktop is a location. Your Documents folder is a location. Everything on your computer has a location, and locations are all relative. The whole thing is called a **filesystem**. Here is an illustration of the typical Mac OSX filesystem (Windows filesystems are fairly similar). Indentation implies nesting:
 
 ```
 /
