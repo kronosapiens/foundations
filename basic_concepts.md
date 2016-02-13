@@ -69,7 +69,7 @@ A shell is just a program. There are many of them. On Mac OSX, the default is th
 Firing up the shell will bring you to a boring-looking screen which looks something like this:
 
 ```
-
+Hi! Welcome to the shell!
 
 $
 ```
@@ -77,6 +77,7 @@ $
 Not much to look at. You type some things and hit enter. Something happens. Rinse and repeat until your computer crashes or you're a billionare. Things get more interesting when you realize that every command you type into the shell looks like the following:
 
 ```
+Hi! Welcome to the shell!
 
 $ <program> <arguments>
 ```
