@@ -44,7 +44,17 @@ The key takeaway here is that every file in your computer has a location, and th
 /Users/<username>/Desktop/file.txt
 ```
 
-No matter where you are in your computer, this path will always reference the same file. However, it would be tedious to have to type this verbose path every time you needed to reference a file. Most of the time, we refer to files via their "relative paths". But relative to what? Keep reading to find out.
+No matter where you are in your computer, this path will always reference the same file. However, it would be tedious to have to type this verbose path every time you needed to reference a file.
+
+Fortunately, there are shortcuts. One is that the tilde (`~`) character stands for `/Users/<username>/`, where `<username>` is the current logged-in user (i.e. you). Using the tilde, you can reference the same `file.txt` as:
+
+```
+~/Desktop/file.txt
+```
+
+As many files you'll be working with will be stored inside your user directory, this will often be helpful.
+
+Another major shortcut is to use something called a "relative" path. To learn more, read on.
 
 ## Understanding the Command Line
 
@@ -175,6 +185,8 @@ It is possible to "background" a process, which simply means that you don't let 
 /$ <program> <arg1> <arg2> &
 ```
 
+Also, processes can (and often do) create ("spawn") other processes. The Chrome process spawns Tab processes, and so on. Processes can control other processes. There are basically no limits, except that processes can only interact via a specific interface. Processes can change their working directory, or spawn subprocesses in other directories.
+
 ## Debugging Error Messages
 
 Debugging is a large topic. Here we will discuss the most important principal for debugging anything. That principal is: **simplify and isolate the problem.**
@@ -203,15 +215,33 @@ This will work extremely frequently. [StackOverflow](http://stackoverflow.com/) 
 
 ## A Kitchen Metaphor
 
-Having studied with the linguist [George Lakoff](https://en.wikipedia.org/wiki/George_Lakoff), it would be bad form not to include at least one grand metaphor to attempt to put these ideas into some sort of order.
+After taking classes with the linguist [George Lakoff](https://en.wikipedia.org/wiki/George_Lakoff), it would be bad form not to include at least one metaphor to attempt to put these ideas into some sort of order.
 
 Think of your computer as a professional kitchen. Imagine shelves of recipe books, each containing many instructions for how to make certain dishes. Imagine teams of chefs and sous-chefs, working away at various dishes. Raw ingredients are transformed into delicious meals. The resources consumed -- gas for the oven, water for the sink, are accessed via oven ranges and sink spouts.
 
-The recipes are programs -- they sit idle until some chefs are asked to prepare them. The actual cooking of a dish is a process -- in which the kitchen's resources are organized and devoted to preparing a dish. Ingredients and dishes are files -- the objects on which we operate. The ovens and sinks are the kernel -- the interface abstracting away the underlying resources, making them easier to work with.
+The recipes are programs -- they sit idle until some chefs are asked to prepare them. The actual cooking of a dish is a process -- in which the kitchen's resources are organized and devoted to preparing a dish. Ingredients and dishes are files -- the objects on which we operate. The ovens and sinks are the kernel -- the interface abstracting away the underlying resources, making them easier to work with. One recipe can contain many components (sub-recipes), which need to be spawned off and prepared seperately.
 
 You can have a million recipes, but only cook two dishes. You can have five recipes, but make each one a thousand times. You can cook one dish at a time, and leave most of your resources unused, or turn on every single oven.
 
 The owner of the restaraunt is [sudo](https://en.wikipedia.org/wiki/Sudo) -- able to overrule even the head chef, and set whatever rules she wants.
+
+## A Practical Example
+
+Imagine you want to do some R programming using RStudio. You begin by double-clicking the RStudio icon on your dock, which brings up the RStudio GUI. You write some R code inside of the GUI, and run it. Let's think about what happened:
+
+1. Double-clicking the RStudio icon read the RStudio program and created an RStudio process. Most (but not all) of this process is the graphical user interface.
+2. While starting up, RStudio checked its settings file to see what its current working directory should be (`~` by default).
+3. When you ran your code in the GUI, RStudio spawned a new process in the context of that working directory, which executed your code and returned the result. This is known as a REPL (a "Read-Evaluate-Print" Loop).
+
+Now, imagine your code references a data file -- say, a JSON file containined a bunch of tweets. This file is stored in some location. When you're writing your R code, the location you give *must be relative to the current working directory of the RStudio process*.
+
+For example, if your working directory is `~`, and your code looks like this:
+
+```
+tweets = parseTweets('tweets.json')
+```
+
+Then RStudio will run this command on the file located at `~/tweets.json`. If the file is elsewhere, you'll get an error.
 
 ## Git and GitHub
 
@@ -251,5 +281,5 @@ For this class, it is strongly advised that you also:
 
 3. "Fork" the course repository. What this basically means is that you're going to copy the course repository to your own account.
 4. Clone the forked repository to your computer.
-5. Point RStudio's "Default Working Directory" to the course repository.
+5. Point RStudio's default working directory to the course repository.
 6. Avoid approximately half of your classmate's problems.
