@@ -77,7 +77,7 @@ $
 Not much to look at. You type some things and hit enter. Something happens. Rinse and repeat until your computer crashes or you're a billionare. Things get more interesting when you realize that every command you type into the shell looks like the following:
 
 ```
-Hi! Welcome to the shell!
+
 
 $ <program> <arguments>
 ```
@@ -99,6 +99,7 @@ When you are in a directory, every file argument is evaluated as though the curr
 'Hello world'
 
 /dir1$ cd ..
+
 /$ python file1.py
 usr/bin/python: can't open file 'file1.py': [Errno 2] No such file or directory
 ```
