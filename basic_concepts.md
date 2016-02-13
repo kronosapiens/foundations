@@ -4,7 +4,7 @@ The goal of this guide is to explain in a high-level but useful way the core con
 
 ## Understanding the Filesystem
 
-The most important thing to remember when doing any sort of programming is that every command is run in the context of some **location**. Your Desktop is a location. Your Documents folder is a location. Everything on your computer has a location, and locations are all relative. The whole thing is called a **filesystem**. Here is an illustration of the typical Mac OSX filesystem (Windows filesystems are fairly similar). Indentation implies nesting:
+The most important thing to remember when doing any sort of programming is that every command is run in the context of some **location**. Your Desktop is a location. Your Documents folder is a location. Everything on your computer has a location, and everything exists in relation to everything else. The whole thing is called a **filesystem**. Here is an illustration of the typical Mac OSX filesystem (Windows filesystems are fairly similar). Indentation implies nesting:
 
 ```
 /
@@ -38,13 +38,13 @@ The most important thing to remember when doing any sort of programming is that 
 
 ```
 
-The key takeaway here is that every file in your computer has a location, and this location can be described by the full, or "absolute" path. For example, the text file on the desktop can be described in the following way:
+The key takeaway here is that every file in your computer has a location, and this location can be described by the full, or "absolute" path. For example, the `file.txt` file on the desktop can be described in the following way:
 
 ```
 /Users/<username>/Desktop/file.txt
 ```
 
-No matter where you are in your computer, this path will always reference the same file. However, it would be tedius to have to type this verbose path every time you needed to reference a file. Most of the time, we refer to files via their "relative paths". But relative to what?
+No matter where you are in your computer, this path will always reference the same file. However, it would be tedious to have to type this verbose path every time you needed to reference a file. Most of the time, we refer to files via their "relative paths". But relative to what? Keep reading to find out.
 
 ## Understanding the Command Line
 
@@ -52,7 +52,7 @@ Really, watch [the video](https://www.youtube.com/watch?v=tc4ROCJYbm0).
 
 To understand the command line, it's valuable to first understand the various "layers" that make up a computer.
 
-At the very bottom, there's the **hardware**: chips, memory, and electricity. These are the fruits of electrical engineering and can do simple things very, very quickly. Programming these these directly is very tedious. As a result, we wrap the hardware around a very core piece of software, known as a **kernel**. The kernel is software that controls the hardware and the basic resources (CPU power, memory) of the computer. To get the computer to do things, we talk to the kernel. Note how the problem is computing got a little bit simpler.
+At the very bottom, there's the **hardware**: chips, memory, and electricity. These are the fruits of electrical engineering and can do simple things very, very quickly. Programming these directly is very tedious. As a result, we wrap the hardware around a very core piece of software, known as a **kernel**. The kernel is software that controls the hardware and the basic resources (CPU power, memory) of the computer. To get the computer to do things, we talk to the kernel. Note how the problem of computing got a little bit simpler.
 
 For many people, interactions with a computer takes place via a graphical user interface, otherwise known as a "GUI". Icons on your desktop, double-clicks, drag-and-drop -- all of these are GUI operations. The GUI is a program, like any other, which puts things on the screen and interprets keystrokes and trackpad activity. The GUI talks to the kernel and turns your clicks and keystrokes into actions.
 
@@ -60,11 +60,11 @@ A GUI is a very sophisticated program, and GUI-based computers have been around 
 
 Why shell? Because the shell was a program that *wrapped around* (get it?) the kernel and provided a convenient way to run commands. A shell is also a program, much simpler than a GUI, which provides a text-based user interface.
 
-Why would someone use a shell over a more user-friendly GUI? Principally, for control. The primary drawback of a GUI is that it can only do what it was programmed to do. It is very hard to program a GUI, and the interfaces popular on modern computers are virtually impossible to modify. A shell, on the other hand, is a simple program that can do almost anything. If a GUI is intuitive but inflexible, a command line is less intuitive (at first), but extremeley powerful and flexible. For programmers, data scientists, and others for whom work involves the organization and manipulation of information, this power and flexibility is crucial. This is why people use the command line.
+Why would someone use a shell over a more user-friendly GUI? Principally, for control. The primary drawback of a GUI is that it can only do what it was programmed to do. It is very hard to program a GUI, and the interfaces popular on modern computers are virtually impossible to modify. A shell, on the other hand, is a simple program that can do almost anything. If a GUI is intuitive but inflexible, a command line is less intuitive (at first), but extremely powerful and flexible. For programmers, data scientists, and others for whom work involves the organization and manipulation of information, this power and flexibility is crucial. This is why people use the command line.
 
 ## Working with the shell
 
-A shell is just a program. There are many of them. On Mac OSX, the default is the "[bash shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell))". On Windows, there is [PowerShell](https://en.wikipedia.org/wiki/Windows_PowerShell). On OSX, you can open a bash shell by opening the "Terminal" application. On Windows, there is a PowerShell application.
+A shell is just a program. There are many kinds of shell. On Mac OSX, the default is the [bash shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). On Windows, there is [PowerShell](https://en.wikipedia.org/wiki/Windows_PowerShell). On OSX, you can open a bash shell by opening the "Terminal" application. On Windows, there is a PowerShell application.
 
 Firing up the shell will bring you to a boring-looking screen which looks something like this:
 
@@ -115,7 +115,7 @@ Here, we saw two programs run on three arguments.
 Hopefully this example will illustrate the nature of using a shell to navigate and executing commands in a filesystem.
 
 ## Command Reference
-### for Linux-style command line interfaces
+#### For Linux-style command line interfaces
 
 Note that in this program reference, filenames and directories can be given as either absolute or relative paths.
 
@@ -163,9 +163,9 @@ Note that programs often accept additional optional arguments. Consider:
 
 ## Standard Input, Standard Output, Processes
 
-By default, every program takes input from one place, Standard Input (`stdin`), and sends output to one place, Standard Output (`stdout`). In general, `stdin` is the keyboard/trackbad. `Stdout` is the screen. A surprisingly large amount of programming boils down to routing the output of one program into the input of another.
+By default, every program takes input from one place, Standard Input (`stdin`), and sends output to one place, Standard Output (`stdout`). In general, `stdin` is the keyboard/trackbad. `stdout` is the screen. A surprisingly large amount of programming boils down to routing the output of one program into the input of another.
 
-When you execute a command in the shell, the program "takes control" of the terminal while it is running. When it finishes, it returns control of the shell. While the programming is running, it may request input from standard in (such as asking for a password). It may also send output to standard out (for example, informing you about the program's progress).
+When you execute a command in the shell, the program "takes control" of the terminal while it is running. When it finishes, it returns control of the shell. While the programming is running, it may request input from standard in (such as asking for a password). It may also send output to standard out (for example, updating you on the program's progress).
 
 A **process** is an instance of a running program. To think of it another way, a program is just a bunch of zeroes and ones inside of memory. A process is that program being executed in a million steps on the computer's CPU. The same program can be run as many processes. They fundamental rule about computers is that processes aren't allowed to mess with each other's memory. The kernel makes sure of this (remember the kernel?).
 
@@ -203,7 +203,7 @@ This will work extremely frequently. [StackOverflow](http://stackoverflow.com/) 
 
 ## A Kitchen Metaphor
 
-As a former student of the controversial linguist [George Lakoff](https://en.wikipedia.org/wiki/George_Lakoff), it would be bad form not to include at least one grand metaphor to attempt to place these ideas in comfortable order.
+Having studied with the linguist [George Lakoff](https://en.wikipedia.org/wiki/George_Lakoff), it would be bad form not to include at least one grand metaphor to attempt to put these ideas into some sort of order.
 
 Think of your computer as a professional kitchen. Imagine shelves of recipe books, each containing many instructions for how to make certain dishes. Imagine teams of chefs and sous-chefs, working away at various dishes. Raw ingredients are transformed into delicious meals. The resources consumed -- gas for the oven, water for the sink, are accessed via oven ranges and sink spouts.
 
@@ -211,7 +211,7 @@ The recipes are programs -- they sit idle until some chefs are asked to prepare 
 
 You can have a million recipes, but only cook two dishes. You can have five recipes, but make each one a thousand times. You can cook one dish at a time, and leave most of your resources unused, or turn on every single oven.
 
-The owner of the restaraunt is [Sudo](https://en.wikipedia.org/wiki/Sudo) -- able to overrule even the head chef, and set whatever rules she wants.
+The owner of the restaraunt is [sudo](https://en.wikipedia.org/wiki/Sudo) -- able to overrule even the head chef, and set whatever rules she wants.
 
 ## Git and GitHub
 
@@ -233,9 +233,13 @@ GitHub, on the other hand, is a website which makes it easy to collaborate with 
 Using Git involves understanding a handful of commands. Here are most of them:
 
 `git clone <url to repo>` -- clone a repository from GitHub to your computer
+
 `git add .` -- prepare files for the next commit
+
 `git commit -am "<commit message>"` -- make a commit, with the message `<commit message>`
+
 `git push` -- "push" new changes up to GitHub
+
 `git pull` -- "pull" new changes from GitHub
 
 To get started:
