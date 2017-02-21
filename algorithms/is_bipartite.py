@@ -37,19 +37,17 @@ def is_bipartite(graph):
     explored = {node: 0 for node in V}
     q = queue()
     color = {}
-    curr_color = 0
 
     s = V.pop()
     explored[s] = 1
-    color[s] = curr_color
+    color[s] = 0
     q.push(s)
     while q.size:
         node = q.pop()
-        curr_color = 0 if color[node] else 1
         for neighbor in graph.vertices[node]:
             if not explored[neighbor]:
                 explored[neighbor] = 1
-                color[neighbor] = curr_color
+                color[neighbor] = 1 - color[node] # Opposite
                 q.push(neighbor)
             elif color[neighbor] == color[node]:
                 return False
