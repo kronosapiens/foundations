@@ -50,11 +50,10 @@ class graph(object):
     {}
     >>> dg.vertices['dog']['in']
     {}
-
     '''
     def __init__(self, kind=UNDIRECTED):
         self.kind = kind
-        self.vertices = {}
+        self.vertices = {} # Will be a dictionary of dictionaries.
 
     def __repr__(self):
         return 'n = {}'.format(len(self.vertices))
