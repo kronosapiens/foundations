@@ -5,7 +5,7 @@ Objectives:
     O(m + n) running time
 
 Args:
-    bt: a binary tree, with nodes encoded as integers.
+    node: the root of a binary tree, with node values encoded as integers.
 
 Returns:
     True if the elements of the tree are sorted, False otherwise.
@@ -91,7 +91,6 @@ Notes:
 >>> bt.right.set_right(9)
 >>> is_sorted(bt)
 True
-
 >>> bt.right.set_left(5)
 >>> is_sorted(bt)
 False
@@ -101,12 +100,12 @@ from datastructures.stack import stack
 from datastructures.binary_tree import binary_tree
 
 # My Implementation
-def my_is_sorted(bt):
+def my_is_sorted(node):
     s = stack()
     explored = set()
     curr_max = 0
 
-    s.push(bt)
+    s.push(node)
     while not s.is_empty:
         curr_node = s.peek()
         explored.add(curr_node)
